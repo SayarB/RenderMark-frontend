@@ -1,8 +1,8 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { marked } from 'marked'
+const DOMParser = window.DOMParser
+const FileReader = window.FileReader
 export default function Home () {
   const [file, setFile] = useState(null)
   const [fileText, setFileText] = useState('')
