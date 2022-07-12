@@ -16,7 +16,7 @@
 
 ## Features
 
-- [ ] Takes in a Markdown file ( _.md,_.markdown ) with data about the video
+- [ ] Takes in a Markdown file ( \_.md ) with data about the video
 - [ ] Reads the file and finds the relevant data, transforms it into a json and sends it to the backend
 - [ ] A Video template is hydrated with the passed data
 - [ ] Lets you preview and download the Video in the most common formats.
