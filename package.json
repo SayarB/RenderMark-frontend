@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "npx standard --fix && npx stylelint --fix \"*/*.css\""
   },
   "dependencies": {
     "marked": "^4.0.17",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "eslint": "8.19.0",
-    "eslint-config-next": "12.2.2"
+    "eslint-config-next": "12.2.2",
+    "stylelint-config-standard": "^26.0.0"
   }
 }
