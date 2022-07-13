@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 import { marked } from 'marked'
-const DOMParser = window.DOMParser
-const FileReader = window.FileReader
+import { parse } from 'node-html-parser'
 export default function Home () {
   const [file, setFile] = useState(null)
   const [fileText, setFileText] = useState('')
@@ -12,9 +11,7 @@ export default function Home () {
     if (fileText.length > 0) {
       console.log(marked.parse(fileText))
       const html = marked.parse(fileText)
-      const parser = new DOMParser()
-
-      const dom = parser.parseFromString(html, 'text/html')
+      const dom = parse(html)
       const title = dom.querySelector('h1').innerText
       setJson((json) => ({ ...json, title }))
       setJson((json) => ({ ...json, scenes: [] }))
@@ -48,8 +45,9 @@ export default function Home () {
     setFileText(e.target.result)
   }
   function handleFileSubmit () {
-    console.log(file)
-    const reader = new FileReader(file)
+    if (typeof window === 'undefined') return
+
+    const reader = new window.FileReader(file)
     reader.onloadend = handleFile
     reader.readAsText(file, 'utf-8')
   }
