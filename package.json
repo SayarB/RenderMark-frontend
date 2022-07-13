@@ -1,0 +1,23 @@
+{
+  "name": "rendermark-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "npx standard --fix && npx stylelint --fix \"*/*.css\""
+  },
+  "dependencies": {
+    "marked": "^4.0.17",
+    "next": "12.2.2",
+    "node-html-parser": "^5.3.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "8.19.0",
+    "eslint-config-next": "12.2.2",
+    "stylelint-config-standard": "^26.0.0"
+  }
+}
