@@ -13,15 +13,15 @@
 
 .browser-image {
   position: absolute;
-  top: 15%;
-  right: 58%;
+  top: 13%;
+  right: 63%;
 }
 
 .mobile-image {
   position: absolute;
   transform: translate(50%, 50%);
-  bottom: 7%;
-  right: 15%;
+  bottom: 9%;
+  right: 10%;
 }
 
 .navbar {
