@@ -9,6 +9,10 @@
     "lint": "npx standard --fix && npx stylelint --fix \"*/*.css\""
   },
   "dependencies": {
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.9.0",
     "marked": "^4.0.17",
     "next": "12.2.2",
     "node-html-parser": "^5.3.3",
