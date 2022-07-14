@@ -13,7 +13,7 @@ export default function Button ({
         padding: '10px 15px',
         margin: '0 10px',
         fontFamily: '"Overpass", sans-serif',
-        fontSize: '2rem',
+        fontSize: '1.7rem',
         border: 'none',
         borderRadius: '5px',
         backgroundColor: bgColor,

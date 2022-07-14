@@ -51,8 +51,10 @@ export default function HomePage () {
         </div>
       </div>
       <div className={styles.content}>
-        <h1>&quot;Good Design is Good Business&quot;</h1>
-        <p>-- Thomas Watson Jr., businessman, second president of IBM</p>
+        <div className={styles['content-text']}>
+          <h1>&quot;Good Design is Good Business&quot;</h1>
+          <p>-- Thomas Watson Jr., businessman, second president of IBM</p>
+        </div>
         <Button
           style={{
             background: `linear-gradient(
