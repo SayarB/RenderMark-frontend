@@ -13,15 +13,15 @@
 
 .browser-image {
   position: absolute;
-  top: 15%;
-  right: 58%;
+  top: 13%;
+  right: 63%;
 }
 
 .mobile-image {
   position: absolute;
   transform: translate(50%, 50%);
-  bottom: 7%;
-  right: 15%;
+  bottom: 9%;
+  right: 10%;
 }
 
 .navbar {
@@ -48,7 +48,7 @@
 }
 
 .content {
-  width: min(100%, 1200px);
+  width: min(90%, 1200px);
   margin: 0;
   text-align: center;
   position: absolute;
@@ -95,6 +95,6 @@
 
 @media screen and (max-width: 756px) {
   .content-text {
-    font-size: 1.3rem;
+    font-size: 1.7rem;
   }
 }
