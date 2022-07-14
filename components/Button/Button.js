@@ -1,29 +1,29 @@
-import { ButtonBase } from "@mui/material";
-export default function Button({
+import { ButtonBase } from '@mui/material'
+export default function Button ({
   children,
-  bgColor = "#FFFFFF",
+  bgColor = '#FFFFFF',
   hoverBgColor,
   style = {},
-  onClick = () => console.log("Clicked " + children),
+  onClick = () => console.log('Clicked ' + children)
 }) {
   return (
     <ButtonBase
       onClick={onClick}
       sx={{
-        padding: "10px 15px",
-        margin: "0 10px",
+        padding: '10px 15px',
+        margin: '0 10px',
         fontFamily: '"Overpass", sans-serif',
-        fontSize: "2rem",
-        border: "none",
-        borderRadius: "5px",
+        fontSize: '2rem',
+        border: 'none',
+        borderRadius: '5px',
         backgroundColor: bgColor,
-        "&:hover": {
-          backgroundColor: hoverBgColor,
+        '&:hover': {
+          backgroundColor: hoverBgColor
         },
-        ...style,
+        ...style
       }}
     >
       {children}
     </ButtonBase>
-  );
+  )
 }

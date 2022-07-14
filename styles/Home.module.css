@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: linear-gradient(250.55deg, #284feb -10.86%, #ff00a8 127.85%);
 }
+
 .background {
   position: fixed;
   top: 0;
@@ -9,17 +10,20 @@
   right: 0;
   bottom: 0;
 }
-.browser_image {
+
+.browser-image {
   position: absolute;
   top: 20%;
   right: 50%;
 }
-.mobile_image {
+
+.mobile-image {
   position: absolute;
   transform: translate(50%, 50%);
   bottom: 10%;
   right: 10%;
 }
+
 .navbar {
   height: 10vh;
   padding: 5px 10px;
@@ -27,18 +31,22 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .navbar img {
   height: 100%;
 }
-.logo_image {
+
+.logo-image {
   width: auto;
   max-width: min(200px, 40%);
 }
+
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .content {
   width: 100%;
   text-align: center;
@@ -53,9 +61,11 @@
   align-items: center;
   justify-content: center;
 }
+
 .content > h1 {
   margin: 5px;
 }
+
 .content > p {
   margin: 0;
   margin-bottom: 20px;
