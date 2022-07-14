@@ -66,12 +66,14 @@
 .content-text {
   padding: 15px;
   min-width: 80%;
-  background: linear-gradient(
-    120.89deg,
-    rgb(115 4 129 / 58.9%) 5.96%,
-    rgb(49 1 94 / 61%) 68.72%
-  );
-  box-shadow: 0 1px 4px rgb(11 55 0 / 27%),
+  background:
+    linear-gradient(
+      120.89deg,
+      rgb(115 4 129 / 58.9%) 5.96%,
+      rgb(49 1 94 / 61%) 68.72%
+    );
+  box-shadow:
+    0 1px 4px rgb(11 55 0 / 27%),
     inset 0 4px 5px rgb(255 255 255 / 16%);
   backdrop-filter: blur(15px);
 
