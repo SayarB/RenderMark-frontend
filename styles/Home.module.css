@@ -48,7 +48,7 @@
 }
 
 .content {
-  width: min(100%, 1200px);
+  width: min(90%, 1200px);
   margin: 0;
   text-align: center;
   position: absolute;
@@ -95,6 +95,6 @@
 
 @media screen and (max-width: 756px) {
   .content-text {
-    font-size: 1.3rem;
+    font-size: 1.7rem;
   }
 }

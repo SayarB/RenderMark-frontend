@@ -11,6 +11,7 @@ export default function Button ({
       onClick={onClick}
       sx={{
         padding: '10px 15px',
+        paddingTop: '12px',
         margin: '0 10px',
         fontFamily: '"Overpass", sans-serif',
         fontSize: '1.7rem',
