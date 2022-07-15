@@ -65,7 +65,7 @@ export default function HomePage () {
             boxShadow: `0px 1px 4px rgba(11, 55, 0, 0.27),
             inset 0px 4px 5px rgba(255, 255, 255, 0.16)`,
 
-            borderRadius: '10px',
+            borderRadius: '5px',
             border: 'none',
             fontSize: '2rem',
             padding: '10px 15px',
