@@ -52,8 +52,8 @@ export default function HomePage () {
       </div>
       <div className={styles.content}>
         <div className={styles['content-text']}>
-          <h1>&quot;Good Design is Good Business&quot;</h1>
-          <p>-- Thomas Watson Jr., businessman, second president of IBM</p>
+          <h1>&quot;GOOD DESIGN IS GOOD BUSINESS&quot;</h1>
+          <p>-- THOMAS WATSON JR., BUSINESSMAN, SECOND PRESIDENT OF IBM</p>
         </div>
         <Button
           style={{
