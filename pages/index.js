@@ -59,8 +59,8 @@ export default function HomePage () {
           style={{
             background: `linear-gradient(
                 120.89deg,
-                rgba(124, 100, 231, 1) 5.96%,
-                rgba(230, 30, 230, 1) 68.72%
+                rgba(200, 100, 251, 1) 5.96%,
+                rgba(230, 30, 230, 1) 50.72%
             )`,
             boxShadow: `0px 1px 4px rgba(11, 55, 0, 0.27),
             inset 0px 4px 5px rgba(255, 255, 255, 0.16)`,
