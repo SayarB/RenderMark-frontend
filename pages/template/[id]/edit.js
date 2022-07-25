@@ -11,17 +11,7 @@ const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
   { ssr: false }
 )
-const EditerMarkdown = dynamic(
-  () =>
-    import('@uiw/react-md-editor').then((mod) => {
-      return mod.default.Markdown
-    }),
-  { ssr: false }
-)
-const Markdown = dynamic(
-  () => import('@uiw/react-markdown-preview').then((mod) => mod.default),
-  { ssr: false }
-)
+
 const initialMD = `# A Promo Video
 
 ## Scenes:
@@ -30,13 +20,13 @@ const initialMD = `# A Promo Video
 
 < Your Text Goes Here  >
 
-< Image goes here >
+< Image link goes here >
   
 ### Scene 2:
   
 < Your Text Goes Here >
   
-< Image goes Here >
+< Image link goes Here >
 `
 
 export default function EditMarkdownForTemplate () {
@@ -45,6 +35,7 @@ export default function EditMarkdownForTemplate () {
   const [showPreview, setShowPreview] = useState()
   const [json, setJson] = useState({})
   const [parseDone, setParseDone] = useState(false)
+  const [error, setError] = useState('')
   const togglePreview = useCallback(() => {
     setShowPreview(!showPreview)
   }, [showPreview])
@@ -56,38 +47,68 @@ export default function EditMarkdownForTemplate () {
     const title = dom.querySelector('h1').innerText
     setJson((json) => ({ ...json, templateid: id, title }))
     setJson((json) => ({ ...json, scenes: [] }))
-    Array.from(dom.querySelectorAll('h3')).forEach((ele) => {
-      const textContent = ele.textContent.trimEnd()
-      if (textContent.includes('Scene')) {
-        const index = textContent
-          .split(' ')[1]
-          .substring(0, textContent.split(' ')[1].length - 1)
-        const nextChild = ele.nextElementSibling
-        const text = nextChild?.innerHTML
+    const scenesArray = []
+    try {
+      Array.from(dom.querySelectorAll('h3')).forEach((ele, i) => {
+        const textContent = ele.textContent.trimEnd()
+        if (textContent.includes('Scene') || textContent.includes('scene')) {
+          const splitText = textContent.split(' ')
+          console.log(splitText)
+          if (
+            splitText.length !== 2 ||
+            !splitText[1].endsWith(':') ||
+            isNaN(parseInt(splitText[1].substring(0, splitText[1].length - 1)))
+          ) {
+            throw new Error(
+              'Scene number is should be specified in the format Scene <scene-number>:'
+            )
+          }
 
-        const img = nextChild.nextElementSibling.firstChild.getAttribute('src')
-        console.log(index)
-        setJson((json) => {
-          const scenesArray = [...json.scenes]
+          const index = parseInt(
+            splitText[1].substring(0, splitText[1].length - 1)
+          )
+          if (index > scenesArray.length + 1) throw new Error('Out of Bounds')
+          const nextChild = ele.nextElementSibling
+          if (!nextChild) { throw new Error('Scene ' + index + ' is not specified correctly') }
+
+          const text = nextChild?.innerHTML
+          if (
+            !nextChild.nextElementSibling ||
+            !nextChild.nextElementSibling.firstChild ||
+            !nextChild.nextElementSibling.firstChild.getAttribute
+          ) {
+            throw new Error(
+              'Image is not specified properly in scene ' +
+                index +
+                ':  Remember to give a line gap after text'
+            )
+          }
+          const img =
+            nextChild.nextElementSibling.firstChild.getAttribute('src')
+          console.log(index)
           scenesArray[index - 1] = { text, img }
-          return { ...json, scenes: scenesArray }
-        })
-      }
+        }
+      })
+      setJson((json) => {
+        return { ...json, scenes: scenesArray }
+      })
       setParseDone(true)
-    })
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   useEffect(() => {
     if (parseDone === true) {
       console.log(json)
     }
-  }, [parseDone])
+  }, [parseDone, json])
 
   const [value, setValue] = useState(initialMD)
 
   return (
     <>
-      <p>{JSON.stringify(json)}</p>
+      {parseDone ? <p>{JSON.stringify(json)}</p> : ''}
       <div data-color-mode='dark' className={styles['markdown-editor']}>
         <h1>{id}</h1>
         <Button
@@ -101,7 +122,10 @@ export default function EditMarkdownForTemplate () {
           preview={showPreview ? 'preview' : 'edit'}
           height={600}
           value={value}
-          onChange={setValue}
+          onChange={(e) => {
+            setError('')
+            setValue(e)
+          }}
         />
         <Button
           style={{ marginTop: '2rem' }}
@@ -110,6 +134,7 @@ export default function EditMarkdownForTemplate () {
         >
           Submit
         </Button>
+        <p style={{ color: 'red', fontSize: '2rem' }}>{error}</p>
       </div>
     </>
   )

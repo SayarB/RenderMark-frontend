@@ -27,13 +27,15 @@
 }
 
 .selected {
-  background: linear-gradient(
-    252.56deg,
-    rgb(197 113 236 / 79%) 1.99%,
-    rgb(239 84 112 / 79%) 100%
-  );
+  background:
+    linear-gradient(
+      252.56deg,
+      rgb(197 113 236 / 79%) 1.99%,
+      rgb(239 84 112 / 79%) 100%
+    );
   border-radius: 5px;
 }
+
 .nav-right {
   display: flex;
   flex: 1;
