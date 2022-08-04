@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import styles from '../styles/Home.module.css'
 import browserImage from '../assets/browser.svg'
@@ -7,11 +7,16 @@ import Image from 'next/image'
 import Button from '../components/Button/Button'
 
 export default function HomePage () {
-  const [user] = useState(false)
+  const [user, setUser] = useState(false)
+
+  const changeUser = useCallback(() => {
+    setUser(!user)
+  }, [user])
+
   if (user) {
     return (
       <div>
-        <Navbar />
+        <Navbar setUser={changeUser} selected='home' />
       </div>
     )
   }
@@ -42,7 +47,11 @@ export default function HomePage () {
           <Image alt='Logo' src='/logo.svg' width={200} height={80} />
         </div>
         <div className={styles.buttons}>
-          <Button bgColor='#8972E0' hoverBgColor='#9980E9'>
+          <Button
+            onClick={() => setUser(true)}
+            bgColor='#8972E0'
+            hoverBgColor='#9980E9'
+          >
             Login
           </Button>
           <Button bgColor='#E4B7D5' hoverBgColor='#EEC5E1'>

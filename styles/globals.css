@@ -33,6 +33,10 @@ a {
   font-family: Overpass, sans-serif;
 }
 
+.w-md-editor {
+  width: min(100%, 1000px);
+}
+
 @media screen and (max-width: 756px) {
   html {
     font-size: 55.5%;
