@@ -19,7 +19,8 @@
     "next-remove-imports": "^1.0.6",
     "node-html-parser": "^5.3.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.2"
   },
   "devDependencies": {
     "eslint": "8.19.0",

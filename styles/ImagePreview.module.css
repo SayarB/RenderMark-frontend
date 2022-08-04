@@ -1,0 +1,32 @@
+.image-preview {
+  width: 100px;
+  height: 100px;
+
+  margin: 20px;
+  position: relative;
+  border-radius: 5px;
+}
+.image-preview > img {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(245, 245, 220, 0.301);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: none;
+}
+
+.image-preview:hover .overlay {
+  display: flex;
+}
