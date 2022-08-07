@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
-
+import { useRouter } from 'next/router'
 import { marked } from 'marked'
 import { parse } from 'node-html-parser'
 export default function Upload () {
+  const router = useRouter()
+  const { id } = router.query
   const [file, setFile] = useState(null)
   const [fileText, setFileText] = useState('')
   const [json, setJson] = useState({})
@@ -13,7 +15,8 @@ export default function Upload () {
       const html = marked.parse(fileText)
       const dom = parse(html)
       const title = dom.querySelector('h1').innerText
-      setJson((json) => ({ ...json, title }))
+
+      setJson((json) => ({ ...json, templateid: id, title }))
       setJson((json) => ({ ...json, scenes: [] }))
       Array.from(dom.querySelectorAll('h3')).forEach((ele) => {
         const textContent = ele.textContent.trimEnd()
