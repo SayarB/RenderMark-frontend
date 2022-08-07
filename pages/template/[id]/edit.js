@@ -8,7 +8,8 @@ import { useCallback, useEffect, useState } from 'react'
 import XMLHttpRequest from 'xhr2'
 import styles from '../../../styles/EditMarkdown.module.css'
 import Button from '../../../components/Button/Button'
-
+import Background from '../../../assets/md-editor-bg.svg'
+import Image from 'next/image'
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
   { ssr: false }
@@ -159,10 +160,18 @@ export default function EditMarkdownForTemplate () {
     <>
       {parseDone ? <p>{JSON.stringify(json)}</p> : ''}
       <div className={styles['edit-container']}>
+        <div className={styles.background}>
+          <Image layout='responsive' src={Background} alt='' />
+        </div>
         <div data-color-mode='dark' className={styles['markdown-editor']}>
           <h1>{id}</h1>
           <Button
-            style={{ marginBottom: '2rem' }}
+            style={{
+              marginBottom: '2rem',
+              background:
+                'linear-gradient(252.56deg, rgba(236, 113, 113, 0.9) 1.99%, rgba(239, 84, 196, 0.9) 100%);',
+              borderRadius: '5px'
+            }}
             bgColor='#eeeeee'
             onClick={togglePreview}
           >
@@ -179,7 +188,12 @@ export default function EditMarkdownForTemplate () {
             }}
           />
           <Button
-            style={{ marginTop: '2rem' }}
+            style={{
+              marginTop: '2rem',
+              background:
+                'linear-gradient(252.56deg, rgba(113, 236, 162, 0.9) 1.99%, rgba(84, 118, 239, 0.9) 100%);',
+              borderRadius: '5px'
+            }}
             bgColor='#10ce20'
             onClick={() => showJson(value)}
           >
