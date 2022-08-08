@@ -164,7 +164,6 @@ export default function EditMarkdownForTemplate () {
           <Image layout='responsive' src={Background} alt='' />
         </div>
         <div data-color-mode='dark' className={styles['markdown-editor']}>
-          <h1>{id}</h1>
           <Button
             style={{
               marginBottom: '2rem',
