@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { marked } from 'marked'
 import { parse } from 'node-html-parser'
+import styles from '../../../styles/UploadMarkdown.module.css'
+import StyledDropzone from '../../../components/Dropzone/Dropzone'
+import Button from '../../../components/Button/Button'
 export default function Upload () {
   const router = useRouter()
   const { id } = router.query
@@ -9,6 +12,15 @@ export default function Upload () {
   const [fileText, setFileText] = useState('')
   const [json, setJson] = useState({})
   const [parseDone, setParseDone] = useState(false)
+
+  const onDrop = useCallback(
+    (acceptedFile) => {
+      setFile(acceptedFile)
+      handleFileSubmit()
+    },
+    [setFile, handleFileSubmit]
+  )
+
   useEffect(() => {
     if (fileText.length > 0) {
       console.log(marked.parse(fileText))
@@ -55,15 +67,11 @@ export default function Upload () {
     reader.readAsText(file, 'utf-8')
   }
   return (
-    <div>
-      <input
-        type='file'
-        accept='.md, .markdown'
-        onChange={(e) => setFile(e.target.files[0])}
-      />
-      <button onClick={handleFileSubmit}>Submit</button>
-
-      <pre>{JSON.stringify(json)}</pre>
+    <div className={styles['upload-container']}>
+      <StyledDropzone onDrop={onDrop} file={file} />
+      <Button style={{ margin: '20px' }} onClick={handleFileSubmit}>
+        Submit
+      </Button>
     </div>
   )
 }
