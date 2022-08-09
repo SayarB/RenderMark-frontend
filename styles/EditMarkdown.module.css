@@ -49,3 +49,28 @@
   height: 100%;
   overflow: hidden;
 }
+
+.edit-bg-top-left {
+  width: max(200px, 10vw);
+  height: max(200px, 10vw);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.edit-bg-center {
+  width: max(900px, 60vw);
+  height: max(900px, 60vw);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.edit-bg-bottom-right {
+  width: max(200px, 10vw);
+  height: max(200px, 10vw);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}

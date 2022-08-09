@@ -13,14 +13,6 @@ export default function Upload () {
   const [json, setJson] = useState({})
   const [parseDone, setParseDone] = useState(false)
 
-  const onDrop = useCallback(
-    (acceptedFile) => {
-      setFile(acceptedFile)
-      handleFileSubmit()
-    },
-    [setFile, handleFileSubmit]
-  )
-
   useEffect(() => {
     if (fileText.length > 0) {
       console.log(marked.parse(fileText))
@@ -59,19 +51,29 @@ export default function Upload () {
   function handleFile (e) {
     setFileText(e.target.result)
   }
-  function handleFileSubmit () {
+  const handleFileSubmit = useCallback(() => {
     if (typeof window === 'undefined') return
 
     const reader = new window.FileReader(file)
     reader.onloadend = handleFile
     reader.readAsText(file, 'utf-8')
-  }
+  }, [file])
+
+  const onDrop = useCallback(
+    (acceptedFile) => {
+      setFile(acceptedFile)
+      handleFileSubmit()
+    },
+    [setFile, handleFileSubmit]
+  )
+
   return (
     <div className={styles['upload-container']}>
       <StyledDropzone onDrop={onDrop} file={file} />
       <Button style={{ margin: '20px' }} onClick={handleFileSubmit}>
         Submit
       </Button>
+      <pre style={{ width: '50px' }}>{JSON.stringify(json)}</pre>
     </div>
   )
 }
