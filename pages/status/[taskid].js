@@ -8,7 +8,8 @@ import axios from 'axios'
 import { saveAs } from 'file-saver'
 import { useQuery } from '@tanstack/react-query'
 import Button from '../../components/Button/Button'
-
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 function TaskStatusPage () {
   const router = useRouter()
   const { taskid } = router.query
@@ -58,11 +59,23 @@ function TaskStatusPage () {
   useQuery(
     ['video-status'],
     async () => {
-      const res = await statusCheck()
-      const resData = res.data
-      console.log(res.data)
-      if (resData.task_result !== null) {
-        setVideoPath(resData.task_result)
+      try {
+        const res = await statusCheck()
+        const resData = res.data
+        console.log(res.data)
+        if (resData.task_result !== null) {
+          setVideoPath(resData.task_result)
+        }
+      } catch (err) {
+        toast.error('There is some server error! Please Try again', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true
+        })
+        router.back()
       }
     },
     {
@@ -74,28 +87,32 @@ function TaskStatusPage () {
 
   if (loading === true) {
     return (
-      <div className={styles['video-preview-container']}>
-        <Lottie
-          isClickToPauseDisabled
-          options={{ ...defaultOptions }}
-          height='50%'
-          width='30%'
-        />
-        <h1>Your Video is being rendered</h1>
-      </div>
+      <>
+        <div className={styles['video-preview-container']}>
+          <Lottie
+            isClickToPauseDisabled
+            options={{ ...defaultOptions }}
+            height='50%'
+            width='30%'
+          />
+          <h1>Your Video is being rendered</h1>
+        </div>
+      </>
     )
   } else {
     return (
-      <div className={styles['video-preview-container']}>
-        <Video src={'http://localhost:8000/api/v1/videos/' + videoPath} />
-        <Button
-          onClick={() => {
-            saveAs(urlPath, 'image.mp4')
-          }}
-        >
-          Download
-        </Button>
-      </div>
+      <>
+        <div className={styles['video-preview-container']}>
+          <Video src={'http://localhost:8000/api/v1/videos/' + videoPath} />
+          <Button
+            onClick={() => {
+              saveAs(urlPath, 'image.mp4')
+            }}
+          >
+            Download
+          </Button>
+        </div>
+      </>
     )
   }
 }

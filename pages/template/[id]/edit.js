@@ -13,6 +13,7 @@ import bg2 from '../../../assets/md-editor-bg2.svg'
 import bg3 from '../../../assets/md-editor-bg3.svg'
 import Image from 'next/image'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
@@ -54,7 +55,6 @@ export default function EditMarkdownForTemplate () {
   const [showPreview] = useState(true)
   const [json, setJson] = useState({})
   const [parseDone, setParseDone] = useState(false)
-  const [error, setError] = useState('')
 
   const [value, setValue] = useState(initialMD)
 
@@ -164,27 +164,49 @@ export default function EditMarkdownForTemplate () {
       })
       setParseDone(true)
     } catch (err) {
-      setError(err.message)
+      console.error(err)
+      toast.error(err.toString().split('Error:')[1], {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     }
   }
 
   useEffect(() => {
-    const renderVideo = async () => {
-      const res = await axios.post('http://127.0.0.1:8000/api/v1/render', json)
-      const resData = res.data
-      if (resData.task_id) {
-        router.push('/status/' + resData.task_id)
+    const renderVideo = async (toastid) => {
+      try {
+        const res = await axios.post(
+          'http://127.0.0.1:8000/api/v1/render',
+          json
+        )
+        const resData = res.data
+        if (resData.task_id) {
+          router.push('/status/' + resData.task_id)
+          toast.dismiss(toastid)
+        }
+      } catch (err) {
+        toast.update(toastid, {
+          render: 'Server Error Occurred! Try again after some time',
+          type: 'error',
+          isLoading: false
+        })
       }
     }
     if (parseDone === true) {
+      const toastid = toast.loading('Loading')
       console.log(json)
-      renderVideo()
+      renderVideo(toastid)
     }
-  }, [parseDone, json])
+  }, [parseDone, json, router])
 
   return (
     <>
-      {parseDone ? <p>{JSON.stringify(json)}</p> : ''}
+      {/* {parseDone ? <p>{JSON.stringify(json)}</p> : ""} */}
       <div className={styles['edit-container']}>
         <div className={styles.background}>
           <div className={styles['edit-bg-top-left']}>
@@ -216,7 +238,6 @@ export default function EditMarkdownForTemplate () {
             height={600}
             value={value}
             onChange={(e) => {
-              setError('')
               setValue(e)
             }}
           />
@@ -228,11 +249,14 @@ export default function EditMarkdownForTemplate () {
               borderRadius: '5px'
             }}
             bgColor='#10ce20'
-            onClick={() => showJson(value)}
+            onClick={() => {
+              setParseDone(false)
+              showJson(value)
+            }}
           >
             Submit
           </Button>
-          <p style={{ color: 'red', fontSize: '2rem' }}>{error}</p>
+          {/* <p style={{ color: "red", fontSize: "2rem" }}>{error}</p> */}
         </div>
       </div>
     </>
