@@ -5,10 +5,11 @@ import browserImage from '../assets/browser.svg'
 import mobileImage from '../assets/mobile.svg'
 import Image from 'next/image'
 import Button from '../components/Button/Button'
+import { useRouter } from 'next/router'
 
 export default function HomePage () {
   const [user, setUser] = useState(false)
-
+  const router = useRouter()
   const changeUser = useCallback(() => {
     setUser(!user)
   }, [user])
@@ -65,6 +66,9 @@ export default function HomePage () {
           <p>-- THOMAS WATSON JR., BUSINESSMAN, SECOND PRESIDENT OF IBM</p>
         </div>
         <Button
+          onClick={() => {
+            router.push('/template/1/edit')
+          }}
           style={{
             background: `linear-gradient(
                 120.89deg,

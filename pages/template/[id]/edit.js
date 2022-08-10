@@ -4,10 +4,16 @@ import { parse } from 'node-html-parser'
 import '@uiw/react-md-editor/markdown-editor.css'
 import '@uiw/react-markdown-preview/markdown.css'
 import dynamic from 'next/dynamic'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import XMLHttpRequest from 'xhr2'
 import styles from '../../../styles/EditMarkdown.module.css'
 import Button from '../../../components/Button/Button'
+import bg1 from '../../../assets/md-editor-bg1.svg'
+import bg2 from '../../../assets/md-editor-bg2.svg'
+import bg3 from '../../../assets/md-editor-bg3.svg'
+import Image from 'next/image'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
@@ -29,15 +35,26 @@ const initialMD = `# A Promo Video
 < Your Text Goes Here >
   
 < Image link goes Here >
+
+### Scene 3:
+
+< Your Text Goes Here  >
+
+< Image link goes here >
+  
+### Scene 4:
+  
+< Your Text Goes Here >
+  
+< Image link goes Here >
 `
 
 export default function EditMarkdownForTemplate () {
   const router = useRouter()
   const { id } = router.query
-  const [showPreview, setShowPreview] = useState()
+  const [showPreview] = useState(true)
   const [json, setJson] = useState({})
   const [parseDone, setParseDone] = useState(false)
-  const [error, setError] = useState('')
 
   const [value, setValue] = useState(initialMD)
 
@@ -48,7 +65,9 @@ export default function EditMarkdownForTemplate () {
     const posStart = textarea.selectionStart
     const posEnd = textarea.selectionEnd
     setValue((val) => {
-      return val.substring(0, posStart) + text + val.substring(posEnd)
+      return (
+        val.substring(0, posStart) + `![](${text})` + val.substring(posEnd)
+      )
     })
   }
 
@@ -85,16 +104,16 @@ export default function EditMarkdownForTemplate () {
     xhr.send(blob)
   }
 
-  const togglePreview = useCallback(() => {
-    setShowPreview(!showPreview)
-  }, [showPreview])
+  // const togglePreview = useCallback(() => {
+  //   setShowPreview(!showPreview)
+  // }, [showPreview])
   const showJson = (value) => {
     const html = marked.parse(value)
     console.log(html)
     const dom = parse(html)
 
     const title = dom.querySelector('h1').innerText
-    setJson((json) => ({ ...json, templateid: id, title }))
+    setJson((json) => ({ ...json, template: id, title }))
     setJson((json) => ({ ...json, scenes: [] }))
     const scenesArray = []
     try {
@@ -137,7 +156,7 @@ export default function EditMarkdownForTemplate () {
           const img =
             nextChild.nextElementSibling.firstChild.getAttribute('src')
           console.log(index)
-          scenesArray[index - 1] = { text, img }
+          scenesArray[index - 1] = { text, image: img, subtext: ' ' }
         }
       })
       setJson((json) => {
@@ -145,47 +164,99 @@ export default function EditMarkdownForTemplate () {
       })
       setParseDone(true)
     } catch (err) {
-      setError(err.message)
+      console.error(err)
+      toast.error(err.toString().split('Error:')[1], {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
     }
   }
 
   useEffect(() => {
-    if (parseDone === true) {
-      console.log(json)
+    const renderVideo = async (toastid) => {
+      try {
+        const res = await axios.post(
+          'http://127.0.0.1:8000/api/v1/render',
+          json
+        )
+        const resData = res.data
+        if (resData.task_id) {
+          router.push('/status/' + resData.task_id)
+          toast.dismiss(toastid)
+        }
+      } catch (err) {
+        toast.update(toastid, {
+          render: 'Server Error Occurred! Try again after some time',
+          type: 'error',
+          isLoading: false
+        })
+      }
     }
-  }, [parseDone, json])
+    if (parseDone === true) {
+      const toastid = toast.loading('Loading')
+      console.log(json)
+      renderVideo(toastid)
+    }
+  }, [parseDone, json, router])
 
   return (
     <>
-      {parseDone ? <p>{JSON.stringify(json)}</p> : ''}
+      {/* {parseDone ? <p>{JSON.stringify(json)}</p> : ""} */}
       <div className={styles['edit-container']}>
+        <div className={styles.background}>
+          <div className={styles['edit-bg-top-left']}>
+            <Image layout='fill' src={bg1} alt='' />
+          </div>
+          <div className={styles['edit-bg-center']}>
+            <Image layout='fill' src={bg2} alt='' />
+          </div>
+          <div className={styles['edit-bg-bottom-right']}>
+            <Image layout='fill' src={bg3} alt='' />
+          </div>
+        </div>
         <div data-color-mode='dark' className={styles['markdown-editor']}>
-          <h1>{id}</h1>
-          <Button
-            style={{ marginBottom: '2rem' }}
-            bgColor='#eeeeee'
+          {/* <Button
+            style={{
+              marginBottom: "2rem",
+              background:
+                "linear-gradient(252.56deg, rgba(236, 113, 113, 0.9) 1.99%, rgba(239, 84, 196, 0.9) 100%);",
+              borderRadius: "5px",
+            }}
+            bgColor="#eeeeee"
             onClick={togglePreview}
           >
-            {showPreview ? 'Editor' : 'Preview'}
-          </Button>
+            {showPreview ? "Editor" : "Preview"}
+          </Button> */}
           <MDEditor
             onPaste={pasteHandler}
-            preview={showPreview ? 'preview' : 'edit'}
+            preview={showPreview ? 'live' : 'edit'}
             height={600}
             value={value}
             onChange={(e) => {
-              setError('')
               setValue(e)
             }}
           />
           <Button
-            style={{ marginTop: '2rem' }}
+            style={{
+              marginTop: '2rem',
+              background:
+                'linear-gradient(252.56deg, rgba(113, 236, 162, 0.9) 1.99%, rgba(84, 118, 239, 0.9) 100%);',
+              borderRadius: '5px'
+            }}
             bgColor='#10ce20'
-            onClick={() => showJson(value)}
+            onClick={() => {
+              setParseDone(false)
+              showJson(value)
+            }}
           >
             Submit
           </Button>
-          <p style={{ color: 'red', fontSize: '2rem' }}>{error}</p>
+          {/* <p style={{ color: "red", fontSize: "2rem" }}>{error}</p> */}
         </div>
       </div>
     </>
