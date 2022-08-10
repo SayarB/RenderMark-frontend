@@ -1,5 +1,3 @@
-import { useCallback, useState } from 'react'
-import Navbar from '../components/Navbar/Navbar'
 import styles from '../styles/Home.module.css'
 import browserImage from '../assets/browser.svg'
 import mobileImage from '../assets/mobile.svg'
@@ -8,19 +6,8 @@ import Button from '../components/Button/Button'
 import { useRouter } from 'next/router'
 
 export default function HomePage () {
-  const [user, setUser] = useState(false)
   const router = useRouter()
-  const changeUser = useCallback(() => {
-    setUser(!user)
-  }, [user])
 
-  if (user) {
-    return (
-      <div>
-        <Navbar setUser={changeUser} selected='home' />
-      </div>
-    )
-  }
   return (
     <div className={styles.container}>
       <div className={styles.background}>
@@ -43,23 +30,7 @@ export default function HomePage () {
           />
         </div>
       </div>
-      <div className={styles.navbar}>
-        <div className={styles['logo-image']}>
-          <Image alt='Logo' src='/logo.svg' width={200} height={80} />
-        </div>
-        <div className={styles.buttons}>
-          <Button
-            onClick={() => setUser(true)}
-            bgColor='#8972E0'
-            hoverBgColor='#9980E9'
-          >
-            Login
-          </Button>
-          <Button bgColor='#E4B7D5' hoverBgColor='#EEC5E1'>
-            Sign Up
-          </Button>
-        </div>
-      </div>
+
       <div className={styles.content}>
         <div className={styles['content-text']}>
           <h1>&quot;GOOD DESIGN IS GOOD BUSINESS&quot;</h1>

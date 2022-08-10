@@ -3,10 +3,11 @@ import styles from '../../styles/Navbar.module.css'
 import Button from '../Button/Button'
 import Link from 'next/link'
 import Image from 'next/image'
-import avatar from '../../assets/avatar.svg'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import { useRouter } from 'next/router'
 
-export default function Navbar ({ selected, setUser }) {
+export default function Navbar ({ selected }) {
+  const router = useRouter()
   const isMobile = useMediaQuery('(max-width:756px)')
   return (
     <div className={styles.navbar}>
@@ -25,68 +26,31 @@ export default function Navbar ({ selected, setUser }) {
             <MenuIcon />
           </Button>
         )}
-        <Link href='/upload'>
+        <Link href='/'>
           <div className={styles['logo-image']} style={{ cursor: 'pointer' }}>
             <Image
               layout='fixed'
               alt='Logo'
-              src='/logo_black.svg'
+              src={selected !== '/templates' ? '/logo.svg' : '/logo_black.svg'}
               width={200}
               height={80}
             />
           </div>
         </Link>
       </div>
-      <div className={styles.navlist}>
-        {!isMobile && (
-          <>
-            <Link href='/'>
-              <p
-                className={
-                  styles.navlink +
-                  (selected === 'home' ? ' ' + styles.selected : '')
-                }
-              >
-                Home
-              </p>
-            </Link>
-            <Link href='/templates'>
-              <p
-                className={
-                  styles.navlink +
-                  (selected === 'templates' ? ' ' + styles.selected : '')
-                }
-              >
-                Templates
-              </p>
-            </Link>
-            <Link href='/features'>
-              <p
-                className={
-                  styles.navlink +
-                  (selected === 'features' ? ' ' + styles.selected : '')
-                }
-              >
-                Features
-              </p>
-            </Link>
-          </>
-        )}
-      </div>
+
       <div className={styles['nav-right']}>
-        {!isMobile && (
+        {selected !== '/templates' && (
           <Button
+            onClick={() => router.push('/templates')}
             style={{
               background: 'linear-gradient(90deg, #12C2E9 0%, #C471ED 150%)',
               color: 'white'
             }}
           >
-            Create A Template
+            Choose A Template
           </Button>
         )}
-        <Button onClick={() => setUser()}>
-          <Image layout='fixed' src={avatar} width={40} height={40} />
-        </Button>
       </div>
     </div>
   )
