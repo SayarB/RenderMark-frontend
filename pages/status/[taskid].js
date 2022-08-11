@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import animationData from '../../assets/anims/progress-anim.json'
+import dynamic from 'next/dynamic'
 import Video from '../../components/Video/Video'
-import Lottie from 'react-lottie'
 import styles from '../../styles/VideoPreview.module.css'
 import axios from 'axios'
 import { saveAs } from 'file-saver'
@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import Button from '../../components/Button/Button'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+const Lottie = dynamic(() => import('react-lottie'))
 function TaskStatusPage () {
   const router = useRouter()
   const { taskid } = router.query

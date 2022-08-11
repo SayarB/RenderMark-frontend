@@ -3,8 +3,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true'
 })
 
-module.exports = withBundleAnalyzer((phase, { defaultConfig }) => {
-  return removeImports({
-    ...defaultConfig
-  })
-})
+module.exports = (phase, { defaultConfig }) => {
+  return withBundleAnalyzer(
+    removeImports({
+      ...defaultConfig
+    })
+  )
+}

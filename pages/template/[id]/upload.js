@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { marked } from 'marked'
 import { parse } from 'node-html-parser'
 import styles from '../../../styles/UploadMarkdown.module.css'
-import StyledDropzone from '../../../components/Dropzone/Dropzone'
+import StyledDropzone from '../../../components/Dropzone/StyledDropzone'
 import Button from '../../../components/Button/Button'
 export default function Upload () {
   const router = useRouter()
