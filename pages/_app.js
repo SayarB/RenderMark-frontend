@@ -13,6 +13,7 @@ function MyApp ({ Component, pageProps }) {
       <Navbar selected={router.pathname} />
       <Component {...pageProps} />
       <ToastContainer
+        theme='colored'
         autoClose={5000}
         closeOnClick
         pauseOnFocusLoss
