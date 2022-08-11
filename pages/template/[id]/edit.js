@@ -240,13 +240,21 @@ export default function EditMarkdownForTemplate () {
               hideToolbar
               onPaste={pasteHandler}
               preview={showPreview ? 'live' : 'edit'}
-              height
+              height={560}
+              enableScroll
+              visiableDragbar={false}
+              overflow={false}
               value={value}
+              textareaProps={{
+                style: {
+                  padding: '10px'
+                }
+              }}
               style={{
                 borderBottomRightRadius: '20px',
                 borderBottomLeftRadius: '20px',
                 height: '70vh',
-                padding: '10px'
+                padding: '0 3px'
               }}
               onChange={(e) => {
                 setValue(e)
