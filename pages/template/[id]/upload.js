@@ -73,7 +73,7 @@ export default function Upload () {
       <Button style={{ margin: '20px' }} onClick={handleFileSubmit}>
         Submit
       </Button>
-      <pre style={{ width: '50px' }}>{JSON.stringify(json)}</pre>
+      {/* <pre style={{ width: '50px' }}>{JSON.stringify(json)}</pre> */}
     </div>
   )
 }

@@ -1,24 +1,24 @@
-import { useRouter } from 'next/router'
-import { marked } from 'marked'
-import { parse } from 'node-html-parser'
-import '@uiw/react-md-editor/markdown-editor.css'
-import '@uiw/react-markdown-preview/markdown.css'
-import dynamic from 'next/dynamic'
-import { useEffect, useState } from 'react'
-import XMLHttpRequest from 'xhr2'
-import styles from '../../../styles/EditMarkdown.module.css'
-import Button from '../../../components/Button/Button'
-import bg1 from '../../../assets/md-editor-bg1.svg'
-import bg2 from '../../../assets/md-editor-bg2.svg'
-import bg3 from '../../../assets/md-editor-bg3.svg'
-import Image from 'next/image'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import { useRouter } from "next/router";
+import { marked } from "marked";
+import { parse } from "node-html-parser";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import XMLHttpRequest from "xhr2";
+import styles from "../../../styles/EditMarkdown.module.css";
+import Button from "../../../components/Button/Button";
+import bg1 from "../../../assets/md-editor-bg1.svg";
+import bg2 from "../../../assets/md-editor-bg2.svg";
+import bg3 from "../../../assets/md-editor-bg3.svg";
+import Image from "next/image";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const MDEditor = dynamic(
-  () => import('@uiw/react-md-editor').then((mod) => mod.default),
+  () => import("@uiw/react-md-editor").then((mod) => mod.default),
   { ssr: false }
-)
+);
 
 const initialMD = `# A Promo Video
 
@@ -47,180 +47,179 @@ const initialMD = `# A Promo Video
 < Your Text Goes Here >
   
 < Image link goes Here >
-`
+`;
 
-export default function EditMarkdownForTemplate () {
-  const router = useRouter()
-  const { id } = router.query
-  const [showPreview] = useState(true)
-  const [json, setJson] = useState({})
-  const [parseDone, setParseDone] = useState(false)
+export default function EditMarkdownForTemplate() {
+  const apiUrl = process.env.NEXT_PUBLIC_PROD_apiUrl;
+  const router = useRouter();
+  const { id } = router.query;
+  const [showPreview] = useState(true);
+  const [json, setJson] = useState({});
+  const [parseDone, setParseDone] = useState(false);
 
-  const [value, setValue] = useState(initialMD)
+  const [value, setValue] = useState(initialMD);
 
   const insertAtPosition = (text) => {
     const textarea = document.getElementsByClassName(
-      'w-md-editor-text-input'
-    )[0]
-    const posStart = textarea.selectionStart
-    const posEnd = textarea.selectionEnd
+      "w-md-editor-text-input"
+    )[0];
+    const posStart = textarea.selectionStart;
+    const posEnd = textarea.selectionEnd;
     setValue((val) => {
       return (
         val.substring(0, posStart) + `![](${text})` + val.substring(posEnd)
-      )
-    })
-  }
+      );
+    });
+  };
 
   const pasteHandler = (e) => {
     for (const element of e.clipboardData.items) {
-      const item = element
-      console.log(item.type)
-      if (item.type.indexOf('image') !== -1) {
-        const blob = item.getAsFile()
+      const item = element;
+      console.log(item.type);
+      if (item.type.indexOf("image") !== -1) {
+        const blob = item.getAsFile();
 
-        uploadImage(blob)
+        uploadImage(blob);
       }
     }
-  }
+  };
 
-  function uploadImage (blob) {
-    const xhr = new XMLHttpRequest()
+  function uploadImage(blob) {
+    const xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState !== 4) {
-        return
+        return;
       }
 
       if (xhr.status === 200) {
-        console.log('SUCCESS', xhr.responseText)
-        insertAtPosition(xhr.responseText)
+        console.log("SUCCESS", xhr.responseText);
+        insertAtPosition(xhr.responseText);
       } else {
-        console.warn('request_error')
+        console.warn("request_error");
       }
-    }
+    };
 
-    xhr.open('POST', 'https://3vvbi8.deta.dev/FileUploader', false)
-    xhr.setRequestHeader('Content-Type', blob.type)
-    xhr.send(blob)
+    xhr.open("POST", "https://3vvbi8.deta.dev/FileUploader", false);
+    xhr.setRequestHeader("Content-Type", blob.type);
+    xhr.send(blob);
   }
 
   // const togglePreview = useCallback(() => {
   //   setShowPreview(!showPreview)
   // }, [showPreview])
   const showJson = (value) => {
-    const html = marked.parse(value)
-    console.log(html)
-    const dom = parse(html)
+    const html = marked.parse(value);
+    console.log(html);
+    const dom = parse(html);
 
-    const title = dom.querySelector('h1').innerText
-    setJson((json) => ({ ...json, template: id, title }))
-    setJson((json) => ({ ...json, scenes: [] }))
-    const scenesArray = []
+    const title = dom.querySelector("h1").innerText;
+    setJson((json) => ({ ...json, template: id, title }));
+    setJson((json) => ({ ...json, scenes: [] }));
+    const scenesArray = [];
     try {
-      Array.from(dom.querySelectorAll('h3')).forEach((ele, i) => {
-        const textContent = ele.textContent.trimEnd()
-        if (textContent.includes('Scene') || textContent.includes('scene')) {
-          const splitText = textContent.split(' ')
-          console.log(splitText)
+      Array.from(dom.querySelectorAll("h3")).forEach((ele, i) => {
+        const textContent = ele.textContent.trimEnd();
+        if (textContent.includes("Scene") || textContent.includes("scene")) {
+          const splitText = textContent.split(" ");
+          console.log(splitText);
           if (
             splitText.length !== 2 ||
-            !splitText[1].endsWith(':') ||
+            !splitText[1].endsWith(":") ||
             isNaN(parseInt(splitText[1].substring(0, splitText[1].length - 1)))
           ) {
             throw new Error(
-              'Scene number is should be specified in the format Scene <scene-number>:'
-            )
+              "Scene number is should be specified in the format Scene <scene-number>:"
+            );
           }
 
           const index = parseInt(
             splitText[1].substring(0, splitText[1].length - 1)
-          )
-          if (index > scenesArray.length + 1) throw new Error('Out of Bounds')
-          const nextChild = ele.nextElementSibling
+          );
+          if (index > scenesArray.length + 1) throw new Error("Out of Bounds");
+          const nextChild = ele.nextElementSibling;
           if (!nextChild) {
-            throw new Error('Scene ' + index + ' is not specified correctly')
+            throw new Error("Scene " + index + " is not specified correctly");
           }
 
-          const text = nextChild?.innerHTML
+          const text = nextChild?.innerHTML;
           if (
             !nextChild.nextElementSibling ||
             !nextChild.nextElementSibling.firstChild ||
             !nextChild.nextElementSibling.firstChild.getAttribute
           ) {
             throw new Error(
-              'Image is not specified properly in scene ' +
+              "Image is not specified properly in scene " +
                 index +
-                ':  Remember to give a line gap after text'
-            )
+                ":  Remember to give a line gap after text"
+            );
           }
           const img =
-            nextChild.nextElementSibling.firstChild.getAttribute('src')
-          console.log(index)
-          scenesArray[index - 1] = { text, image: img, subtext: ' ' }
+            nextChild.nextElementSibling.firstChild.getAttribute("src");
+          console.log(index);
+          scenesArray[index - 1] = { text, image: img, subtext: " " };
         }
-      })
+      });
       setJson((json) => {
-        return { ...json, scenes: scenesArray }
-      })
-      setParseDone(true)
+        return { ...json, scenes: scenesArray };
+      });
+      setParseDone(true);
     } catch (err) {
-      console.error(err)
-      toast.error(err.toString().split('Error:')[1], {
-        position: 'top-right',
+      console.error(err);
+      toast.error(err.toString().split("Error:")[1], {
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined
-      })
+        progress: undefined,
+      });
     }
-  }
+  };
 
   useEffect(() => {
     const renderVideo = async (toastid) => {
       try {
-        const res = await axios.post(
-          'http://127.0.0.1:8000/api/v1/render',
-          json
-        )
-        const resData = res.data
+        const res = await axios.post(`${apiUrl}/api/v1/render`, json);
+        const resData = res.data;
         if (resData.task_id) {
-          router.push('/status/' + resData.task_id)
-          toast.dismiss(toastid)
+          router.push("/status/" + resData.task_id);
+          toast.dismiss(toastid);
         }
       } catch (err) {
         toast.update(toastid, {
-          render: 'Server Error Occurred! Try again after some time',
-          type: 'error',
-          isLoading: false
-        })
+          render: "Server Error Occurred! Try again after some time",
+          type: "error",
+          isLoading: false,
+        });
       }
-    }
+    };
     if (parseDone === true) {
-      const toastid = toast.loading('Loading')
-      console.log(json)
-      renderVideo(toastid)
+      const toastid = toast.loading("Loading");
+      console.log(json);
+      renderVideo(toastid);
     }
-  }, [parseDone, json, router])
+  }, [parseDone, json, router]);
 
   return (
     <>
       {/* {parseDone ? <p>{JSON.stringify(json)}</p> : ""} */}
-      <div className={styles['edit-container']}>
+      <div className={styles["edit-container"]}>
         <div className={styles.background}>
-          <div className={styles['edit-bg-top-left']}>
-            <Image layout='fill' src={bg1} alt='' />
+          <div className={styles["edit-bg-top-left"]}>
+            <Image layout="fill" src={bg1} alt="" />
           </div>
-          <div className={styles['edit-bg-center']}>
-            <Image layout='fill' src={bg2} alt='' />
+          <div className={styles["edit-bg-center"]}>
+            <Image layout="fill" src={bg2} alt="" />
           </div>
-          <div className={styles['edit-bg-bottom-right']}>
-            <Image layout='fill' src={bg3} alt='' />
+          <div className={styles["edit-bg-bottom-right"]}>
+            <Image layout="fill" src={bg3} alt="" />
           </div>
         </div>
-        <div data-color-mode='dark' className={styles['markdown-editor']}>
-          {/* <Button
+        <div data-color-mode="dark" className={styles["markdown-editor"]}>
+          <div className={styles["md-editor-placeholder"]}>
+            {/* <Button
             style={{
               marginBottom: "2rem",
               background:
@@ -232,33 +231,51 @@ export default function EditMarkdownForTemplate () {
           >
             {showPreview ? "Editor" : "Preview"}
           </Button> */}
-          <MDEditor
-            onPaste={pasteHandler}
-            preview={showPreview ? 'live' : 'edit'}
-            height={600}
-            value={value}
-            onChange={(e) => {
-              setValue(e)
-            }}
-          />
+            <div className={styles.toolbar}>
+              <div className={styles.circle + " " + styles.red} />
+              <div className={styles.circle + " " + styles.yellow} />
+              <div className={styles.circle + " " + styles.green} />
+            </div>
+            <MDEditor
+              hideToolbar
+              onPaste={pasteHandler}
+              preview={showPreview ? "live" : "edit"}
+              height
+              value={value}
+              style={{
+                borderBottomRightRadius: "20px",
+                borderBottomLeftRadius: "20px",
+                height: "70vh",
+                padding: "10px",
+              }}
+              onChange={(e) => {
+                setValue(e);
+              }}
+            />
+          </div>
           <Button
             style={{
-              marginTop: '2rem',
+              marginTop: "2rem",
               background:
-                'linear-gradient(252.56deg, rgba(113, 236, 162, 0.9) 1.99%, rgba(84, 118, 239, 0.9) 100%);',
-              borderRadius: '5px'
+                "linear-gradient(232.56deg, rgba(93, 216, 142, 0.9) 0.99%, rgba(54, 128, 249, 0.76) 100%);",
+              borderRadius: "5px",
+              fontSize: "2.5rem",
+              color: "white",
+              padding: "1rem 4rem",
+              paddingTop: "1.3rem",
+              fontWeight: "700",
             }}
-            bgColor='#10ce20'
+            bgColor="#10ce20"
             onClick={() => {
-              setParseDone(false)
-              showJson(value)
+              setParseDone(false);
+              showJson(value);
             }}
           >
-            Submit
+            SUBMIT
           </Button>
           {/* <p style={{ color: "red", fontSize: "2rem" }}>{error}</p> */}
         </div>
       </div>
     </>
-  )
+  );
 }

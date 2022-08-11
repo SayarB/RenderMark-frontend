@@ -31,7 +31,11 @@ export default function Navbar ({ selected }) {
             <Image
               layout='fixed'
               alt='Logo'
-              src={selected !== '/templates' ? '/logo.svg' : '/logo_black.svg'}
+              src={
+                selected !== '/templates' && selected !== '/template/[id]/edit'
+                  ? '/logo.svg'
+                  : '/logo_black.svg'
+              }
               width={200}
               height={80}
             />

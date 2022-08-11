@@ -16,8 +16,9 @@ function TaskStatusPage () {
   const [loading, setLoading] = useState(true)
   const [videoPath, setVideoPath] = useState('')
   const [urlPath, setUrlPath] = useState('')
+  const apiUrl = process.env.NEXT_PUBLIC_PROD_apiUrl
   const statusCheck = () => {
-    return axios.get(`http://localhost:8000/api/v1/status/${taskid}`)
+    return axios.get(`${apiUrl}/api/v1/status/${taskid}`)
     // return axios.get(`http://127.0.0.1:8000`);
   }
 
@@ -35,7 +36,7 @@ function TaskStatusPage () {
     if (videoPath !== '') {
       setLoading(false)
       axios({
-        url: 'http://localhost:8000/api/v1/videos/' + videoPath, // your url
+        url: `${apiUrl}/api/v1/videos/${videoPath}`, // your url
         method: 'GET',
         responseType: 'blob' // important
       }).then((response) => {
@@ -103,7 +104,7 @@ function TaskStatusPage () {
     return (
       <>
         <div className={styles['video-preview-container']}>
-          <Video src={'http://localhost:8000/api/v1/videos/' + videoPath} />
+          <Video src={`${apiUrl}/api/v1/videos/${videoPath}`} />
           <Button
             onClick={() => {
               saveAs(urlPath, 'image.mp4')
