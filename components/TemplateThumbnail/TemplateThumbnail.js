@@ -9,9 +9,11 @@ function TemplateThumbnail ({ templateid, thumbnailImage, previewVideo }) {
   useEffect(() => {
     if (videoRef) {
       videoRef.current.addEventListener('timeupdate', () => {
-        setProgress(
-          (videoRef.current.currentTime / videoRef.current.duration) * 100
-        )
+        if (videoRef.current) {
+          setProgress(
+            (videoRef?.current.currentTime / videoRef?.current.duration) * 100
+          )
+        }
       })
     }
   }, [videoRef])

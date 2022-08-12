@@ -269,7 +269,7 @@ export default function EditMarkdownForTemplate () {
             style={{
               marginTop: '2rem',
               background:
-                'linear-gradient(232.56deg, rgba(93, 216, 142, 0.9) 0.99%, rgba(54, 128, 249, 0.76) 100%);',
+                'linear-gradient(232.56deg, rgba(93, 216, 142, 0.9) 0.99%, rgba(54, 128, 249, 0.76) 100%)',
               borderRadius: '5px',
               fontSize: '2.5rem',
               color: 'white',
