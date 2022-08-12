@@ -3,10 +3,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true'
 })
 
-module.exports = (phase, { defaultConfig }) => {
+module.exports = (_phase, { defaultConfig }) => {
   return withBundleAnalyzer(
     removeImports({
-      ...defaultConfig
+      ...defaultConfig,
+      images: {
+        domains: ['images.unsplash.com']
+      }
     })
   )
 }

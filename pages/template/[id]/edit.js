@@ -50,7 +50,7 @@ const initialMD = `# A Promo Video
 `
 
 export default function EditMarkdownForTemplate () {
-  const apiUrl = process.env.NEXT_PUBLIC_PROD_apiUrl
+  const apiUrl = process.env.NEXT_PUBLIC_PROD_API_URL
   const router = useRouter()
   const { id } = router.query
   const [showPreview] = useState(true)
@@ -100,7 +100,7 @@ export default function EditMarkdownForTemplate () {
       }
     }
 
-    xhr.open('POST', 'https://3vvbi8.deta.dev/FileUploader', false)
+    xhr.open('POST', `${apiUrl}/api/v1/FileUploader`, false)
     xhr.setRequestHeader('Content-Type', blob.type)
     xhr.send(blob)
   }
@@ -109,15 +109,20 @@ export default function EditMarkdownForTemplate () {
   //   setShowPreview(!showPreview)
   // }, [showPreview])
   const showJson = (value) => {
-    const html = marked.parse(value)
-    console.log(html)
-    const dom = parse(html)
-
-    const title = dom.querySelector('h1').innerText
-    setJson((json) => ({ ...json, template: id, title }))
-    setJson((json) => ({ ...json, scenes: [] }))
-    const scenesArray = []
     try {
+      const html = marked.parse(value)
+      console.log(html)
+      const dom = parse(html)
+      let title = null
+      try {
+        title = dom.querySelector('h1').innerText
+      } catch (err) {
+        throw new Error('Could not find title')
+      }
+      setJson((json) => ({ ...json, template: id, title }))
+      setJson((json) => ({ ...json, scenes: [] }))
+      const scenesArray = []
+
       Array.from(dom.querySelectorAll('h3')).forEach((ele, i) => {
         const textContent = ele.textContent.trimEnd()
         if (textContent.includes('Scene') || textContent.includes('scene')) {
@@ -186,11 +191,16 @@ export default function EditMarkdownForTemplate () {
         if (resData.task_id) {
           router.push('/status/' + resData.task_id)
           toast.dismiss(toastid)
+          window.localStorage.setItem(
+            'currentVideoRenderTaskId',
+            resData.task_id
+          )
         }
       } catch (err) {
         toast.update(toastid, {
           render: 'Server Error Occurred! Try again after some time',
           type: 'error',
+          autoClose: 5000,
           isLoading: false
         })
       }
@@ -243,13 +253,7 @@ export default function EditMarkdownForTemplate () {
               height={560}
               enableScroll
               visiableDragbar={false}
-              overflow={false}
               value={value}
-              textareaProps={{
-                style: {
-                  padding: '10px'
-                }
-              }}
               style={{
                 borderBottomRightRadius: '20px',
                 borderBottomLeftRadius: '20px',

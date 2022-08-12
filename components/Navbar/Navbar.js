@@ -1,31 +1,16 @@
-import MenuIcon from '@mui/icons-material/Menu'
 import styles from '../../styles/Navbar.module.css'
 import Button from '../Button/Button'
 import Link from 'next/link'
 import Image from 'next/image'
-import useMediaQuery from '@mui/material/useMediaQuery'
+// import useMediaQuery from "@mui/material/useMediaQuery";
 import { useRouter } from 'next/router'
 
 export default function Navbar ({ selected }) {
   const router = useRouter()
-  const isMobile = useMediaQuery('(max-width:756px)')
+  // const isMobile = useMediaQuery("(max-width:756px)");
   return (
     <div className={styles.navbar}>
       <div className={styles['nav-left']}>
-        {isMobile && (
-          <Button
-            style={{
-              borderRadius: '50%',
-              padding: '10px',
-              margin: '0 20px 0 0',
-              '& .MuiSvgIcon-root': {
-                fontSize: '3rem'
-              }
-            }}
-          >
-            <MenuIcon />
-          </Button>
-        )}
         <Link href='/'>
           <div className={styles['logo-image']} style={{ cursor: 'pointer' }}>
             <Image

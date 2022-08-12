@@ -4,10 +4,19 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import Navbar from '../components/Navbar/Navbar'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
 const queryClient = new QueryClient()
 function MyApp ({ Component, pageProps }) {
   const router = useRouter()
   console.log(router.pathname)
+  const [currentVideo, setCurrentVideo] = useState('')
+
+  useEffect(() => {
+    setCurrentVideo(window.localStorage.getItem('currentVideoRenderTaskId'))
+  })
+
   return (
     <QueryClientProvider client={queryClient}>
       <Navbar selected={router.pathname} />
@@ -21,6 +30,14 @@ function MyApp ({ Component, pageProps }) {
         style={{ fontSize: '1.4rem' }}
         limit={1}
       />
+
+      {currentVideo &&
+        currentVideo.length > 0 &&
+        !router.pathname.includes('/status') && (
+          <div className='video-link'>
+            <Link href={`/status/${currentVideo}`}>Video Render Status</Link>
+          </div>
+      )}
     </QueryClientProvider>
   )
 }

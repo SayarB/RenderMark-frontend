@@ -17,7 +17,7 @@ function TaskStatusPage () {
   const [loading, setLoading] = useState(true)
   const [videoPath, setVideoPath] = useState('')
   const [urlPath, setUrlPath] = useState('')
-  const apiUrl = process.env.NEXT_PUBLIC_PROD_apiUrl
+  const apiUrl = process.env.NEXT_PUBLIC_PROD_API_URL
   const statusCheck = () => {
     return axios.get(`${apiUrl}/api/v1/status/${taskid}`)
     // return axios.get(`http://127.0.0.1:8000`);
@@ -40,14 +40,18 @@ function TaskStatusPage () {
         url: `${apiUrl}/api/v1/videos/${videoPath}`, // your url
         method: 'GET',
         responseType: 'blob' // important
-      }).then((response) => {
-        const url = window.URL.createObjectURL(
-          new window.Blob([response.data])
-        )
-        setUrlPath(url)
       })
+        .then((response) => {
+          const url = window.URL.createObjectURL(
+            new window.Blob([response.data])
+          )
+          setUrlPath(url)
+        })
+        .catch(() => {
+          toast.error('Server error occurred')
+        })
     }
-  }, [videoPath])
+  }, [videoPath, apiUrl])
   const defaultOptions = {
     loop: true,
     autoplay: true,
