@@ -55,7 +55,8 @@
   display: grid;
   justify-items: center;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 440px));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 420px));
+  grid-template-rows: repeat(auto-fill, 320px);
 }
 
 .progress-bar-track {
@@ -71,4 +72,14 @@
 .progress-bar {
   height: 100%;
   background-color: rgb(255 134 134);
+}
+.heading {
+  align-self: flex-start;
+  margin: 5px 4rem;
+  font-size: 4rem;
+}
+@media screen and (max-width: 1300px) {
+  .thumbnails {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
 }
