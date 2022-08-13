@@ -1,32 +1,32 @@
-import styles from '../styles/Home.module.css'
-import browserImage from '../assets/browser.svg'
-import mobileImage from '../assets/mobile.svg'
-import Image from 'next/image'
-import Button from '../components/Button/Button'
-import { useRouter } from 'next/router'
+import styles from "../styles/Home.module.css";
+import browserImage from "../assets/browser.svg";
+import mobileImage from "../assets/mobile.svg";
+import Image from "next/image";
+import Button from "../components/Button/Button";
+import { useRouter } from "next/router";
 // import Link from 'next/link'
-
-export default function HomePage () {
-  const router = useRouter()
+import logo from "../public/logo.svg";
+export default function HomePage() {
+  const router = useRouter();
 
   return (
     <>
       <div className={styles.container}>
         <div className={styles.background}>
-          <div className={styles['browser-image']}>
+          <div className={styles["browser-image"]}>
             <Image
-              alt='Browser Window'
+              alt="Browser Window"
               src={browserImage}
-              layout='fixed'
+              layout="fixed"
               width={700}
               height={600}
             />
           </div>
-          <div className={styles['mobile-image']}>
+          <div className={styles["mobile-image"]}>
             <Image
-              alt='Browser Window'
+              alt="Browser Window"
               src={mobileImage}
-              layout='fixed'
+              layout="fixed"
               width={300}
               height={600}
             />
@@ -34,13 +34,14 @@ export default function HomePage () {
         </div>
 
         <div className={styles.content}>
-          <div className={styles['content-text']}>
-            <h1>&quot;GOOD DESIGN IS GOOD BUSINESS&quot;</h1>
-            <p>-- THOMAS WATSON JR., BUSINESSMAN, SECOND PRESIDENT OF IBM</p>
+          <div className={styles["content-text"]}>
+            <Image src={logo} width={500} height={120} />
+
+            <p>CREATE PROMO VIDEOS WITH JUST A MARKDOWN</p>
           </div>
           <Button
             onClick={() => {
-              router.push('/templates')
+              router.push("/templates");
             }}
             style={{
               background: `linear-gradient(
@@ -51,12 +52,12 @@ export default function HomePage () {
               boxShadow: `0px 1px 4px rgba(11, 55, 0, 0.27),
             inset 0px 4px 5px rgba(255, 255, 255, 0.16)`,
 
-              borderRadius: '5px',
-              border: 'none',
-              fontSize: '2rem',
-              padding: '10px 15px',
-              color: 'white',
-              cursor: 'pointer'
+              borderRadius: "5px",
+              border: "none",
+              fontSize: "2rem",
+              padding: "10px 15px",
+              color: "white",
+              cursor: "pointer",
             }}
           >
             Get Started
@@ -64,5 +65,5 @@ export default function HomePage () {
         </div>
       </div>
     </>
-  )
+  );
 }
