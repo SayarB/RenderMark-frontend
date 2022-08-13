@@ -50,6 +50,7 @@ const initialMD = `# A Promo Video
 `
 
 export default function EditMarkdownForTemplate () {
+  const apiUrl = process.env.NEXT_PUBLIC_PROD_API_URL
   const router = useRouter()
   const { id } = router.query
   const [showPreview] = useState(true)
@@ -99,7 +100,7 @@ export default function EditMarkdownForTemplate () {
       }
     }
 
-    xhr.open('POST', 'https://3vvbi8.deta.dev/FileUploader', false)
+    xhr.open('POST', `${apiUrl}/api/v1/FileUploader`, false)
     xhr.setRequestHeader('Content-Type', blob.type)
     xhr.send(blob)
   }
@@ -108,15 +109,20 @@ export default function EditMarkdownForTemplate () {
   //   setShowPreview(!showPreview)
   // }, [showPreview])
   const showJson = (value) => {
-    const html = marked.parse(value)
-    console.log(html)
-    const dom = parse(html)
-
-    const title = dom.querySelector('h1').innerText
-    setJson((json) => ({ ...json, template: id, title }))
-    setJson((json) => ({ ...json, scenes: [] }))
-    const scenesArray = []
     try {
+      const html = marked.parse(value)
+      console.log(html)
+      const dom = parse(html)
+      let title = null
+      try {
+        title = dom.querySelector('h1').innerText
+      } catch (err) {
+        throw new Error('Could not find title')
+      }
+      setJson((json) => ({ ...json, template: id, title }))
+      setJson((json) => ({ ...json, scenes: [] }))
+      const scenesArray = []
+
       Array.from(dom.querySelectorAll('h3')).forEach((ele, i) => {
         const textContent = ele.textContent.trimEnd()
         if (textContent.includes('Scene') || textContent.includes('scene')) {
@@ -180,19 +186,21 @@ export default function EditMarkdownForTemplate () {
   useEffect(() => {
     const renderVideo = async (toastid) => {
       try {
-        const res = await axios.post(
-          'http://127.0.0.1:8000/api/v1/render',
-          json
-        )
+        const res = await axios.post(`${apiUrl}/api/v1/render`, json)
         const resData = res.data
         if (resData.task_id) {
           router.push('/status/' + resData.task_id)
           toast.dismiss(toastid)
+          window.localStorage.setItem(
+            'currentVideoRenderTaskId',
+            resData.task_id
+          )
         }
       } catch (err) {
         toast.update(toastid, {
           render: 'Server Error Occurred! Try again after some time',
           type: 'error',
+          autoClose: 5000,
           isLoading: false
         })
       }
@@ -220,7 +228,8 @@ export default function EditMarkdownForTemplate () {
           </div>
         </div>
         <div data-color-mode='dark' className={styles['markdown-editor']}>
-          {/* <Button
+          <div className={styles['md-editor-placeholder']}>
+            {/* <Button
             style={{
               marginBottom: "2rem",
               background:
@@ -232,21 +241,41 @@ export default function EditMarkdownForTemplate () {
           >
             {showPreview ? "Editor" : "Preview"}
           </Button> */}
-          <MDEditor
-            onPaste={pasteHandler}
-            preview={showPreview ? 'live' : 'edit'}
-            height={600}
-            value={value}
-            onChange={(e) => {
-              setValue(e)
-            }}
-          />
+            <div className={styles.toolbar}>
+              <div className={styles.circle + ' ' + styles.red} />
+              <div className={styles.circle + ' ' + styles.yellow} />
+              <div className={styles.circle + ' ' + styles.green} />
+            </div>
+            <MDEditor
+              hideToolbar
+              onPaste={pasteHandler}
+              preview={showPreview ? 'live' : 'edit'}
+              height={560}
+              enableScroll
+              visiableDragbar={false}
+              value={value}
+              style={{
+                borderBottomRightRadius: '20px',
+                borderBottomLeftRadius: '20px',
+                height: '70vh',
+                padding: '0 3px'
+              }}
+              onChange={(e) => {
+                setValue(e)
+              }}
+            />
+          </div>
           <Button
             style={{
               marginTop: '2rem',
               background:
-                'linear-gradient(252.56deg, rgba(113, 236, 162, 0.9) 1.99%, rgba(84, 118, 239, 0.9) 100%);',
-              borderRadius: '5px'
+                'linear-gradient(232.56deg, rgba(93, 216, 142, 0.9) 0.99%, rgba(54, 128, 249, 0.76) 100%)',
+              borderRadius: '5px',
+              fontSize: '2.5rem',
+              color: 'white',
+              padding: '1rem 4rem',
+              paddingTop: '1.3rem',
+              fontWeight: '700'
             }}
             bgColor='#10ce20'
             onClick={() => {
@@ -254,7 +283,7 @@ export default function EditMarkdownForTemplate () {
               showJson(value)
             }}
           >
-            Submit
+            SUBMIT
           </Button>
           {/* <p style={{ color: "red", fontSize: "2rem" }}>{error}</p> */}
         </div>

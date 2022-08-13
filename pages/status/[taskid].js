@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router'
 import React, { useState, useEffect } from 'react'
 import animationData from '../../assets/anims/progress-anim.json'
+import dynamic from 'next/dynamic'
 import Video from '../../components/Video/Video'
-import Lottie from 'react-lottie'
 import styles from '../../styles/VideoPreview.module.css'
 import axios from 'axios'
 import { saveAs } from 'file-saver'
@@ -10,14 +10,16 @@ import { useQuery } from '@tanstack/react-query'
 import Button from '../../components/Button/Button'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+const Lottie = dynamic(() => import('react-lottie'))
 function TaskStatusPage () {
   const router = useRouter()
   const { taskid } = router.query
   const [loading, setLoading] = useState(true)
   const [videoPath, setVideoPath] = useState('')
   const [urlPath, setUrlPath] = useState('')
+  const apiUrl = process.env.NEXT_PUBLIC_PROD_API_URL
   const statusCheck = () => {
-    return axios.get(`http://localhost:8000/api/v1/status/${taskid}`)
+    return axios.get(`${apiUrl}/api/v1/status/${taskid}`)
     // return axios.get(`http://127.0.0.1:8000`);
   }
 
@@ -35,17 +37,21 @@ function TaskStatusPage () {
     if (videoPath !== '') {
       setLoading(false)
       axios({
-        url: 'http://localhost:8000/api/v1/videos/' + videoPath, // your url
+        url: `${apiUrl}/api/v1/videos/${videoPath}`, // your url
         method: 'GET',
         responseType: 'blob' // important
-      }).then((response) => {
-        const url = window.URL.createObjectURL(
-          new window.Blob([response.data])
-        )
-        setUrlPath(url)
       })
+        .then((response) => {
+          const url = window.URL.createObjectURL(
+            new window.Blob([response.data])
+          )
+          setUrlPath(url)
+        })
+        .catch(() => {
+          toast.error('Server error occurred')
+        })
     }
-  }, [videoPath])
+  }, [videoPath, apiUrl])
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -103,7 +109,7 @@ function TaskStatusPage () {
     return (
       <>
         <div className={styles['video-preview-container']}>
-          <Video src={'http://localhost:8000/api/v1/videos/' + videoPath} />
+          <Video src={`${apiUrl}/api/v1/videos/${videoPath}`} />
           <Button
             onClick={() => {
               saveAs(urlPath, 'image.mp4')
