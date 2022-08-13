@@ -56,7 +56,7 @@
   justify-items: center;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(320px, 420px));
-  grid-template-rows: repeat(auto-fill, 320px);
+  grid-auto-rows: 300px;
 }
 
 .progress-bar-track {
