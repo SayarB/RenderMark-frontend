@@ -7,7 +7,7 @@ module.exports = (_phase, { defaultConfig }) => {
   return withBundleAnalyzer(
     removeImports({
       ...defaultConfig,
-      unoptimized: true,
+
       images: {
         domains: ["images.unsplash.com", "res.cloudinary.com"],
       },
