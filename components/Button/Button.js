@@ -1,17 +1,16 @@
-import { ButtonBase, useMediaQuery } from '@mui/material'
+import useMediaQuery from '../../hooks/useMediaQuery'
 export default function Button ({
   children,
   bgColor = '#FFFFFF',
-  hoverBgColor,
   style = {},
   onClick = () => console.log('Clicked ' + children)
 }) {
   const isMobile = useMediaQuery('(max-width:756px)')
 
   return (
-    <ButtonBase
+    <button
       onClick={onClick}
-      sx={{
+      style={{
         padding: isMobile ? '8px 10px' : '10px 15px',
         paddingTop: '10px',
         margin: '0 10px',
@@ -20,13 +19,12 @@ export default function Button ({
         border: 'none',
         borderRadius: '5px',
         backgroundColor: bgColor,
-        '&:hover': {
-          backgroundColor: hoverBgColor
-        },
+        cursor: 'pointer',
+
         ...style
       }}
     >
       {children}
-    </ButtonBase>
+    </button>
   )
 }

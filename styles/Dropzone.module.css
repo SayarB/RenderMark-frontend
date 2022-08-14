@@ -1,0 +1,16 @@
+.dropzone-container {
+  width: min(80vw, 600px);
+}
+
+.md-upload-large-text {
+  font-size: 2.1rem;
+  font-weight: 400;
+  margin: 2rem 0 0;
+  font-family: Montserrat, sans-serif;
+}
+
+.md-upload-subtext {
+  font-size: 1.7rem;
+  margin: 0;
+  font-weight: 900;
+}
