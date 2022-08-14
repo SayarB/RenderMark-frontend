@@ -1,27 +1,35 @@
-# A Promo Video
+# Gmeet Stickers
 
 ## Scenes:
-
+  
 ### Scene 1:
 
-Wow
-
-![](https://res.cloudinary.com/vishruth/image/upload/8db61b95-3fd6-4f00-ad50-478f4918ce59)
-
+![](https://i.imgur.com/vCgTihs.jpg)
+  
 ### Scene 2:
+  
+Stickers in Gmeet!
+  
+![](https://previews.123rf.com/images/varijanta/varijanta1701/varijanta170100028/70057980-set-of-flat-design-social-network-stickers-isolated-vector-illustrations-for-online-communication-ne.jpg)
 
-This
-
-![](https://res.cloudinary.com/vishruth/image/upload/dd3e0f61-6f52-4ada-9027-3ab2ef7836d7)
+Express yourself with your favourite stickers
 
 ### Scene 3:
 
-Works
+Insert stickers with a click of a button!
 
-![](https://res.cloudinary.com/vishruth/image/upload/9a5ec347-6e0d-40ba-93b3-b08dc7b94a82)
+![](https://i.insider.com/5f6a2bb5323fc4001e0d7c7c?width=750&format=jpeg)
 
 ### Scene 4:
+  
+Use your own stickers!
+  
+![](https://cdn.nerdschalk.com/wp-content/uploads/2018/10/Pokemon-WAStickers.jpg)
 
-Great
+The pokemon sticker pack is available for free
 
-![](https://res.cloudinary.com/vishruth/image/upload/e0ad4cd9-a31e-482c-86da-81b0d42566c9)
+### Scene 5:
+
+Check it out now!
+
+stick-it-out.com

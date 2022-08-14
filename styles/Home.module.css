@@ -66,13 +66,15 @@
 .content-text {
   padding: 15px;
   min-width: 80%;
-  background: linear-gradient(
-    120.89deg,
-    rgba(255, 255, 255, 0.0252) 5.96%,
-    rgba(255, 255, 255, 0.0048) 68.72%
-  );
-  box-shadow: 0px 1px 4px rgba(11, 55, 0, 0.27),
-    inset 0px 4px 5px rgba(255, 255, 255, 0.16);
+  background:
+    linear-gradient(
+      120.89deg,
+      rgb(255 255 255 / 2.52%) 5.96%,
+      rgb(255 255 255 / 0.48%) 68.72%
+    );
+  box-shadow:
+    0 1px 4px rgb(11 55 0 / 27%),
+    inset 0 4px 5px rgb(255 255 255 / 16%);
   backdrop-filter: blur(15px);
 
   /* Note: backdrop-filter has minimal browser support */
@@ -87,7 +89,7 @@
 }
 
 .content-text > p {
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   margin: 0;
   margin-bottom: 5px;
 }

@@ -73,11 +73,13 @@
   height: 100%;
   background-color: rgb(255 134 134);
 }
+
 .heading {
-  align-self: flex-start;
+  align-self: center;
   margin: 5px 4rem;
   font-size: 4rem;
 }
+
 @media screen and (max-width: 1300px) {
   .thumbnails {
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));

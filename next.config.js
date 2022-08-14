@@ -8,7 +8,7 @@ module.exports = (_phase, { defaultConfig }) => {
     removeImports({
       ...defaultConfig,
       images: {
-        domains: ['images.unsplash.com']
+        domains: ['images.unsplash.com', 'res.cloudinary.com']
       }
     })
   )

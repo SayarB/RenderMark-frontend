@@ -40,6 +40,7 @@ function TemplateThumbnail ({ templateid, thumbnailImage, previewVideo }) {
             />
           </div>
           <video
+            muted
             ref={videoRef}
             className={styles['video-preview']}
             src={previewVideo}
