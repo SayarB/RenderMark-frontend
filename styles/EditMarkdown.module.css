@@ -99,8 +99,27 @@
   padding-left: 10px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   border: 1px solid rgb(221 219 219);
   border-bottom: none;
+}
+
+.previewbutton {
+  background-color: grey;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.5rem;
+  color: white;
+  padding: 5px 10px;
+  margin-right: 20px;
+  cursor: pointer;
+  font-family: Overpass, sans-serif;
+}
+
+.circles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .circle {
