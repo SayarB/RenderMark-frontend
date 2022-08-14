@@ -14,7 +14,7 @@ import bg3 from '../../../assets/md-editor-bg3.svg'
 import Image from 'next/image'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-
+import Head from 'next/head'
 const MDEditor = dynamic(
   () => import('@uiw/react-md-editor').then((mod) => mod.default),
   { ssr: false }
@@ -26,27 +26,35 @@ const initialMD = `# A Promo Video
   
 ### Scene 1:
 
-< Your Text Goes Here  >
-
-< Image link goes here >
+< Paste Your Image Here >
   
 ### Scene 2:
   
 < Your Text Goes Here >
   
-< Image link goes Here >
+< Paste Your Image Here >
+
+< Your Text Goes Here >
 
 ### Scene 3:
 
 < Your Text Goes Here  >
 
-< Image link goes here >
-  
+< Paste Your Image Here >  
+
 ### Scene 4:
   
 < Your Text Goes Here >
   
-< Image link goes Here >
+< Paste Your Image Here >
+
+< Your Text Goes Here  >
+
+### Scene 5:
+
+< Your Text Goes Here >
+
+< Your Text Goes Here  >
 `
 
 export default function EditMarkdownForTemplate () {
@@ -142,27 +150,37 @@ export default function EditMarkdownForTemplate () {
             splitText[1].substring(0, splitText[1].length - 1)
           )
           if (index > scenesArray.length + 1) throw new Error('Out of Bounds')
-          const nextChild = ele.nextElementSibling
-          if (!nextChild) {
-            throw new Error('Scene ' + index + ' is not specified correctly')
-          }
-
-          const text = nextChild?.innerHTML
-          if (
-            !nextChild.nextElementSibling ||
-            !nextChild.nextElementSibling.firstChild ||
-            !nextChild.nextElementSibling.firstChild.getAttribute
-          ) {
-            throw new Error(
-              'Image is not specified properly in scene ' +
-                index +
-                ':  Remember to give a line gap after text'
-            )
-          }
-          const img =
-            nextChild.nextElementSibling.firstChild.getAttribute('src')
-          console.log(index)
-          scenesArray[index - 1] = { text, image: img, subtext: ' ' }
+          let nextChild = ele.nextElementSibling
+          let text = ''
+          let img = ''
+          let subtext = ''
+          if (index !== 1) {
+            if (!nextChild) {
+              throw new Error('Scene ' + index + ' is not specified correctly')
+            }
+            text = nextChild?.innerHTML
+            nextChild = nextChild.nextElementSibling
+          } else text = ' '
+          if (index !== 5) {
+            if (
+              !nextChild ||
+              !nextChild.firstChild ||
+              !nextChild.firstChild.getAttribute
+            ) {
+              throw new Error(
+                'Image is not specified properly in scene ' +
+                  index +
+                  ':  Remember to give a line gap after text'
+              )
+            }
+            img = nextChild.firstChild.getAttribute('src')
+            console.log(index)
+            nextChild = nextChild.nextElementSibling
+          } else img = ''
+          if (index !== 1 && index !== 3) {
+            subtext = nextChild.innerHTML
+          } else subtext = ' '
+          scenesArray[index - 1] = { text, image: img, subtext }
         }
       })
       setJson((json) => {
@@ -191,9 +209,15 @@ export default function EditMarkdownForTemplate () {
         if (resData.task_id) {
           router.push('/status/' + resData.task_id)
           toast.dismiss(toastid)
+          const now = new Date()
+          const ttl = 86400000
+          const item = {
+            value: resData.task_id,
+            expiry: now.getTime() + ttl
+          }
           window.localStorage.setItem(
             'currentVideoRenderTaskId',
-            resData.task_id
+            JSON.stringify(item)
           )
         }
       } catch (err) {
@@ -214,6 +238,9 @@ export default function EditMarkdownForTemplate () {
 
   return (
     <>
+      <Head>
+        <title>Template : {id}</title>
+      </Head>
       {/* {parseDone ? <p>{JSON.stringify(json)}</p> : ""} */}
       <div className={styles['edit-container']}>
         <div className={styles.background}>
@@ -271,10 +298,10 @@ export default function EditMarkdownForTemplate () {
               background:
                 'linear-gradient(232.56deg, rgba(93, 216, 142, 0.9) 0.99%, rgba(54, 128, 249, 0.76) 100%)',
               borderRadius: '5px',
-              fontSize: '2.5rem',
+              fontSize: '2rem',
               color: 'white',
-              padding: '1rem 4rem',
-              paddingTop: '1.3rem',
+              padding: '1rem 5rem',
+              paddingTop: '1.4rem',
               fontWeight: '700'
             }}
             bgColor='#10ce20'

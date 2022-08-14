@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import Button from '../../components/Button/Button'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Head from 'next/head'
 const Lottie = dynamic(() => import('react-lottie'))
 function TaskStatusPage () {
   const router = useRouter()
@@ -94,6 +95,9 @@ function TaskStatusPage () {
   if (loading === true) {
     return (
       <>
+        <Head>
+          <title>Rendering...</title>
+        </Head>
         <div className={styles['video-preview-container']}>
           <Lottie
             isClickToPauseDisabled
@@ -108,11 +112,14 @@ function TaskStatusPage () {
   } else {
     return (
       <>
+        <Head>
+          <title>Your Video</title>
+        </Head>
         <div className={styles['video-preview-container']}>
           <Video src={`${apiUrl}/api/v1/videos/${videoPath}`} />
           <Button
             onClick={() => {
-              saveAs(urlPath, 'image.mp4')
+              saveAs(urlPath, 'video.mp4')
             }}
           >
             Download

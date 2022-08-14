@@ -48,7 +48,7 @@
 }
 
 .content {
-  width: min(90%, 1200px);
+  width: min(90%, 1000px);
   margin: 0;
   text-align: center;
   position: absolute;
@@ -69,8 +69,8 @@
   background:
     linear-gradient(
       120.89deg,
-      rgb(115 4 129 / 58.9%) 5.96%,
-      rgb(49 1 94 / 61%) 68.72%
+      rgb(255 255 255 / 2.52%) 5.96%,
+      rgb(255 255 255 / 0.48%) 68.72%
     );
   box-shadow:
     0 1px 4px rgb(11 55 0 / 27%),
@@ -89,6 +89,7 @@
 }
 
 .content-text > p {
+  font-size: 1.8rem;
   margin: 0;
   margin-bottom: 5px;
 }

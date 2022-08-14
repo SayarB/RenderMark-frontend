@@ -1,5 +1,5 @@
 .thumbnail-outer-container {
-  margin: 20px;
+  margin: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,8 +7,8 @@
 
 .video-preview-container {
   position: relative;
-  width: min(400px, 100%);
-  aspect-ratio: 1.78;
+  width: clamp(300px, 100%, 450px);
+  aspect-ratio: 1.78 !important;
   overflow: hidden;
   transition: all 0.2s;
   border-radius: 5px;
@@ -41,21 +41,22 @@
 }
 
 .templates-page {
-  padding-top: 8vh;
+  padding-top: 10vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 10px;
+  margin: 0 5px;
 }
 
 .thumbnails {
-  margin: 10px;
+  margin: 5px;
   width: 95%;
   display: grid;
   justify-items: center;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 420px));
+  grid-auto-rows: 300px;
 }
 
 .progress-bar-track {
@@ -71,4 +72,16 @@
 .progress-bar {
   height: 100%;
   background-color: rgb(255 134 134);
+}
+
+.heading {
+  align-self: center;
+  margin: 5px 4rem;
+  font-size: 4rem;
+}
+
+@media screen and (max-width: 1300px) {
+  .thumbnails {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
 }
