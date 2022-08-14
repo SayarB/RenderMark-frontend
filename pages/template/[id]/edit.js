@@ -209,9 +209,15 @@ export default function EditMarkdownForTemplate () {
         if (resData.task_id) {
           router.push('/status/' + resData.task_id)
           toast.dismiss(toastid)
+          const now = new Date()
+          const ttl = 86400000
+          const item = {
+            value: resData.task_id,
+            expiry: now.getTime() + ttl
+          }
           window.localStorage.setItem(
             'currentVideoRenderTaskId',
-            resData.task_id
+            JSON.stringify(item)
           )
         }
       } catch (err) {
