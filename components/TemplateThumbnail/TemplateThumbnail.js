@@ -23,11 +23,13 @@ function TemplateThumbnail ({ templateid, thumbnailImage, previewVideo }) {
         <div
           className={styles['video-preview-container']}
           onMouseEnter={() => {
-            videoRef.current.play()
+            if (videoRef.current.paused) videoRef.current.play()
           }}
           onMouseLeave={() => {
-            videoRef.current.pause()
-            videoRef.current.load()
+            if (!videoRef.current.paused) {
+              videoRef.current.pause()
+              videoRef.current.load()
+            }
           }}
         >
           <div className={styles['image-preview']}>

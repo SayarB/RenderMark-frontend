@@ -239,7 +239,7 @@ export default function EditMarkdownForTemplate () {
   return (
     <>
       <Head>
-        <title>Template : {id}</title>
+        <title>Edit Template</title>
       </Head>
       {/* {parseDone ? <p>{JSON.stringify(json)}</p> : ""} */}
       <div className={styles['edit-container']}>
