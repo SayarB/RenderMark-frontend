@@ -69,7 +69,7 @@ function TaskStatusPage () {
       try {
         const res = await statusCheck()
         const resData = res.data
-        console.log(res.data)
+        // console.log(res.data)
         if (resData.task_result !== null) {
           setVideoPath(resData.task_result)
         }

@@ -15,7 +15,7 @@ export default function Upload () {
 
   useEffect(() => {
     if (fileText.length > 0) {
-      console.log(marked.parse(fileText))
+      // console.log(marked.parse(fileText))
       const html = marked.parse(fileText)
       const dom = parse(html)
       const title = dom.querySelector('h1').innerText
@@ -32,7 +32,7 @@ export default function Upload () {
           const text = nextChild?.innerHTML
           const img =
             nextChild.nextElementSibling.firstChild.getAttribute('src')
-          console.log(index)
+          // console.log(index)
           setJson((json) => {
             const scenesArray = [...json.scenes]
             scenesArray[index - 1] = { text, img }
@@ -45,7 +45,7 @@ export default function Upload () {
   }, [fileText])
 
   useEffect(() => {
-    if (parseDone === true) console.log(json)
+    // if (parseDone === true) console.log(json)
   }, [parseDone])
 
   function handleFile (e) {

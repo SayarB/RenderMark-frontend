@@ -3,7 +3,7 @@ import styles from '../styles/TemplateThumbnails.module.css'
 import axios from 'axios'
 import Head from 'next/head'
 export default function TemplatesPage ({ templates }) {
-  console.log(templates)
+  // console.log(templates)
   return (
     <div className={styles['templates-page']}>
       <Head>
