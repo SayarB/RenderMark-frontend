@@ -11,7 +11,7 @@ import Footer from '../components/Footer/Footer'
 const queryClient = new QueryClient()
 function MyApp ({ Component, pageProps }) {
   const router = useRouter()
-  console.log(router.pathname)
+  // console.log(router.pathname)
   const [currentVideo, setCurrentVideo] = useState('')
 
   useEffect(() => {

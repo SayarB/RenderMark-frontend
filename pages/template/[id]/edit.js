@@ -84,7 +84,7 @@ export default function EditMarkdownForTemplate () {
   const pasteHandler = (e) => {
     for (const element of e.clipboardData.items) {
       const item = element
-      console.log(item.type)
+      // console.log(item.type)
       if (item.type.indexOf('image') !== -1) {
         const blob = item.getAsFile()
 
@@ -102,7 +102,7 @@ export default function EditMarkdownForTemplate () {
       }
 
       if (xhr.status === 200) {
-        console.log('SUCCESS', xhr.responseText)
+        // console.log('SUCCESS', xhr.responseText)
         insertAtPosition(xhr.responseText)
       } else {
         console.warn('request_error')
@@ -120,7 +120,7 @@ export default function EditMarkdownForTemplate () {
   const showJson = (value) => {
     try {
       const html = marked.parse(value)
-      console.log(html)
+      // console.log(html)
       const dom = parse(html)
       let title = null
       try {
@@ -136,7 +136,7 @@ export default function EditMarkdownForTemplate () {
         const textContent = ele.textContent.trimEnd()
         if (textContent.includes('Scene') || textContent.includes('scene')) {
           const splitText = textContent.split(' ')
-          console.log(splitText)
+          // console.log(splitText)
           if (
             splitText.length !== 2 ||
             !splitText[1].endsWith(':') ||
@@ -175,7 +175,7 @@ export default function EditMarkdownForTemplate () {
               )
             }
             img = nextChild.firstChild.getAttribute('src')
-            console.log(index)
+            // console.log(index)
             nextChild = nextChild.nextElementSibling
           } else img = ''
           if (index !== 1 && index !== 3) {
@@ -232,7 +232,7 @@ export default function EditMarkdownForTemplate () {
     }
     if (parseDone === true) {
       const toastid = toast.loading('Loading')
-      console.log(json)
+      // console.log(json)
       renderVideo(toastid)
     }
   }, [parseDone, json, router])
